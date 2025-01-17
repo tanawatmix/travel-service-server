@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use(bodyParser.json()); // จัดการข้อมูลในjson
 app.use(cors()); //จัดการเรื่องการเรียกใช้งานข้ามโดเมน
+
 app.use("/traveller", travellerRoute);//เรียกใช้งานเส้นทางของ traveller
 app.use("/travel", travelRoute);//เรียกใช้งานเส้นทางของ travel
 

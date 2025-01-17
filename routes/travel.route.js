@@ -12,7 +12,7 @@ router.post("/", travelCtrl.createTravel);
 
 router.put("/:travelId", travelCtrl.editTravel);
 
-router.get("/:travelEmail/:travelPassword", travelCtrl.getAllTravel);
+router.get("/:travellerId", travelCtrl.getAllTravel);
 
 router.delete("/:travelId", travelCtrl.deleteTravel);
 
