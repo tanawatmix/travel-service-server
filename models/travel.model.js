@@ -1,58 +1,61 @@
-//fileที่ทำงานหรือแมปกับ table ใน database 
-const sequelize = require('sequelize');
-const db = require('../db/db.js');
+/*
+    ไฟล์ที่แมปข้อมูลกับตารางในฐานข้อมูล เพื่อการทำงานใดๆ กับตารางนั้นๆ
+*/
 
+//นำเข้าเพื่อเรียกใช้งาน module ต่างๆ ที่ต้องใช้งาน
+const Sequelize = require("sequelize"); //จัดการการทำงานกับ database
 
+//นำเข้า db.js ในการเชื่อมต่อกับ database
+const db = require("./../db/db.js");
 
-//สร้างmodel ของตาราง travel
-const Travel = db.define("travel_tb", { 
-    travelId: { 
-        type: sequelize.INTEGER, 
-        primaryKey: true, 
-        autoIncrement: true, 
-        allowNull: false,
-        field: "travelId"
+//สร้าง model เพื่อแมปกับ table ใน database
+const Travel = db.define(
+  "travel_tb",
+  {
+    travelId: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
+      field: "travelId",
     },
-    travelPlace: { 
-        type: sequelize.STRING(200),
-        allowNull: false,
-        field: "travelPlace"
+    travelPlace: {
+      type: Sequelize.STRING(200),
+      allowNull: false,
+      field: "travelPlace",
     },
-    travelStartDate: { 
-        type: sequelize.STRING(30),
-        allowNull: false,
-        field: "travelStartDate"
+    travelStartDate: {
+      type: Sequelize.STRING(30),
+      allowNull: false,
+      field: "travelStartDate",
     },
     travelEndDate: {
-        type: sequelize.STRING(30),
-        allowNull: false,
-        field: "travelEndDate"
+      type: Sequelize.STRING(30),
+      allowNull: false,
+      field: "travelEndDate",
     },
     travelCostTotal: {
-        type: sequelize.DOUBLE,
-        allowNull: false,
-        field: "travelCostTotal"
+      type: Sequelize.DOUBLE,
+      allowNull: false,
+      field: "travelCostTotal",
     },
-    travellerId: { 
-        type: sequelize.INTEGER,
-        allowNull: false,
-        field: "travellerId"
+    travellerId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      field: "travellerId",
     },
     travelImage: {
-        type: sequelize.STRING(150),
-        allowNull: false,
-        field: "travelImage"
-    }
-}, 
-{ 
+      type: Sequelize.STRING(150),
+      allowNull: false,
+      field: "travelImage",
+    },
+  },
+  {
     tableName: "travel_tb",
-    timestamps: false,
+    timestamps: false, //ถ้าต้องการให้ในตารางมีการเก็บวันเวลาที่เป็น Timestamp ก็ให้เป็น true
     freezeTableName: true,
-});
+  }
+);
 
-
-//export ตาราง traveller ออกไปใช้งาน
+//export model ออกไปเพื่อการเรียกใช้งาน
 module.exports = Travel;
-
-
-

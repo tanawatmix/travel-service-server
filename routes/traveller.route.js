@@ -1,17 +1,24 @@
-const travellerCtrl = require('./../controllers/traveller.controller.js');
+/*
+    ไฟล์ที่กำหนด endpoint หรือเส้นทางเพื่อการเรียกใช้งาน
+*/
 
-//เรียกใช้งาน express เพื่อใช้ router ในการจัดการเส้นทาง 
-const express = require('express');
+//เรียกใช้งาน expesee เพื่อใช้งาน Router() ในการจัดการเส้นทางเพื่อการเรียกใช้งาน
+const express = require("express"); //จัดการส่วนต่างๆ ของ Backend
+
+//นำเข้า traveller.controller.js เพื่อกำหนด endpoint หรือเส้นทาง
+//ในการทำงานกับแต่ละฟังก์ชันใน traveller.controller.js ที่ทำงานกับ traveller_tb
+const travellerCtrl = require("./../controllers/traveller.controller.js");
+
+//เรียกใช้งาน Router() ในการจัดการเส้นทางเพื่อการเรียกใช้งาน
 const router = express.Router();
 
-//ในการกำหนดเส้นทางเป็นตามหลักของ rest api
-//เพิ่ม post() แก้ไข put() ลบ delete() และ ค้นหา/ตรวจสอบ/ดึงข้อมูล get()
-
-router.post("/",travellerCtrl.uploadTraveller, travellerCtrl.createTraveller);
+//ในการกำหนดเส้นทางเป็นตามหลักการของ REST API
+//เพิ่ม post(), แก้ไข put()/patch(), ลบ delete(), ค้นหา/ตรวจสอบ/ดึง/ดู get()
+router.post("/", travellerCtrl.uploadTraveller, travellerCtrl.createTraveller);
 
 router.get("/:travellerEmail/:travellerPassword", travellerCtrl.checkLoginTraveller);
 
-router.put("/:travellerId", travellerCtrl.editTraveller);
+router.put("/:travellerId", travellerCtrl.uploadTraveller, travellerCtrl.editTraveller);
 
-//export router ออกไปใช้งาน
+//export router ออกไปเพื่อการเรียกใช้งาน
 module.exports = router;
