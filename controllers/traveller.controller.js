@@ -95,11 +95,19 @@ exports.editTraveller = async (req, res) => {
         delete data.travellerImage
     }
   
-      const result = await Traveller.update(data, {
+      let result = await Traveller.update(data, {
         where: {
           travellerId: req.params.travellerId,
         },
       });
+      
+      //update and find data
+       result = await Traveller.findOne(data, {
+        where: {
+          travellerId: req.params.travellerId,
+        },
+      });
+
       res.status(200).json({
         message: "Traveller updated successfully",
         data: result,

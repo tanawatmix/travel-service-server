@@ -57,28 +57,63 @@ exports.getAllTravel = async (req, res) => {
     });
   }
 };
+//func get travel in travel_tb (Selected One)++++++++++++++++++++++++++++++++++++++++++++
+exports.getTravel = async (req, res) => {
+  try {
+    const result = await Travel.findOne({
+      where: {
+        travelId: req.params.travelId,
+      },
+    });
+    if (result) {
+      res.status(200).json({
+        message: "Get this travel successfully",
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        message: "Get this travel failed",
+        data: result,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
 
-//func edit travel in travel_tb ====================================================
+//func edit travel in travel_tb
 exports.editTravel = async (req, res) => {
   try {
+    //ตรวจสอบว่ามีการอัพโหลดรูปภาพหรือไม่
+    //กรณีที่มี ตรวจสอบก่อนว่ามีไฟล์เก่าไหม ถ้ามีให้ลบไฟล์เก่าออก
     let data = {
       ...req.body,
     };
-    if (req.file) { //ค้นหาเพื่อเอารูป
+
+    if (req.file) {
+      //ตรวจสอบว่ามีการอัพโหลดรูปภาพมาเพื่อแก้ไขหรือไม่
       const travel = await Travel.findOne({
+        //ค้นหารูปเก่า
         where: {
           travelId: req.params.travelId,
         },
       });
-
       if (travel.travelImage) {
-        //ตรวจสอบกรณีที่มีรูป
-        const oldImagePath = "images/travel/" + travel.travelImage; //ลบไฟล์เก่าทิ้ง
-        fs.unlink(oldImagePath,(err) => {console.log(err)});
+        //กรณีมีรูป
+        const oldImagePath = "images/travel/" + travel.travelImage;
+        //ลบไฟล์เก่าออก
+        fs.unlinkSync(oldImagePath, (err) => {
+          console.log(err);
+        });
       }
-      data.travelImage = req.file.path.replace("", "");
-    }else{
-        delete data.travelImage
+
+      //อัพโหลดรูปใหม่
+      data.travelImage = req.file.path.replace("images\\travel\\", "");
+    } else {
+      //กรณีไม่มีการอัพโหลดรูป
+      delete data.travelImage;
     }
 
     const result = await Travel.update(data, {
@@ -98,8 +133,6 @@ exports.editTravel = async (req, res) => {
 };
 
 //func delete travel in travel_tb ====================================================
-
-/*************  ✨ Codeium Command ⭐  *************/
 exports.deleteTravel = async (req, res) => {
   try {
     
@@ -159,5 +192,4 @@ exports.uploadTravel = multer({
     }
     cb("Error: Images Only!");
   },
-}
-).single("travelImage");
+}).single("travelImage");
